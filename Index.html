@@ -1,0 +1,275 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Soho Animated Cafe — Products Showcase</title>
+  <style>
+    :root{
+      --bg:#fff8f2; /* warm cream */
+      --accent:#e63946; /* red */
+      --accent-2:#f6c90e; /* yellow */
+      --muted:#6b6b6b;
+      --card-shadow: 0 8px 20px rgba(0,0,0,0.08);
+      --glass: rgba(255,255,255,0.6);
+    }
+    *{box-sizing:border-box}
+    body{margin:0;font-family:Inter, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial;color:#222;background:linear-gradient(180deg,var(--bg),#fff);}
+
+    /* Header */
+    header{position:sticky;top:0;z-index:50;background:linear-gradient(180deg, rgba(255,255,255,0.95), rgba(255,255,255,0.8));backdrop-filter:saturate(140%) blur(6px);border-bottom:1px solid rgba(0,0,0,0.04);}
+    .nav{max-width:1200px;margin:0 auto;display:flex;align-items:center;gap:18px;padding:14px;}
+    .logo{display:flex;gap:12px;align-items:center;font-weight:700;color:var(--accent);letter-spacing:0.6px}
+    .logo .mark{width:44px;height:44px;border-radius:10px;background:linear-gradient(135deg,var(--accent),var(--accent-2));display:flex;align-items:center;justify-content:center;color:white;font-weight:800}
+    nav ul{display:flex;gap:12px;list-style:none;margin:0;padding:0}
+    nav a{color:var(--muted);text-decoration:none;padding:8px 10px;border-radius:8px}
+    nav a.primary{background:linear-gradient(90deg,var(--accent),#ff7b84);color:white}
+
+    .search{margin-left:auto;display:flex;gap:8px;align-items:center}
+    .search input{padding:10px 12px;border-radius:12px;border:1px solid rgba(0,0,0,0.06);min-width:180px}
+    .cart{padding:8px 12px;border-radius:12px;background:var(--glass);border:1px solid rgba(0,0,0,0.04)}
+
+    /* Hero */
+    .hero{position:relative;overflow:hidden;margin-top:18px}
+    .hero .bg{height:320px;background-image:url('https://images.unsplash.com/photo-1544025162-d76694265947?q=80&w=1600&auto=format&fit=crop&ixlib=rb-4.0.3&s=placeholder');background-size:cover;background-position:center;filter:contrast(1.02) saturate(1.1);display:flex;align-items:center}
+    .hero .overlay{width:100%;height:100%;background:linear-gradient(90deg, rgba(255,255,255,0.0), rgba(255,255,255,0.35));display:flex;align-items:center}
+    .hero .content{max-width:1200px;margin:0 auto;padding:28px;display:flex;align-items:center;gap:28px}
+    .hero .text{background:linear-gradient(180deg,rgba(255,255,255,0.9),rgba(255,255,255,0.75));padding:24px;border-radius:14px;box-shadow:var(--card-shadow)}
+    .hero h1{margin:0;font-size:28px;color:#111}
+    .hero p{margin:8px 0 0;color:var(--muted)}
+
+    /* Floating decorative bottles */
+    .bottle{position:absolute;right:-30px;bottom:20px;width:120px;transform-origin:center;animation:float 6s ease-in-out infinite}
+    .bottle:nth-child(2){right:20px;bottom:70px;width:80px;animation-duration:5s}
+    .bottle img{width:100%;filter:drop-shadow(0 8px 18px rgba(0,0,0,0.12));}
+    @keyframes float{0%{transform:translateY(0) rotate(-6deg)}50%{transform:translateY(-16px) rotate(6deg)}100%{transform:translateY(0) rotate(-6deg)}}
+
+    /* Products grid */
+    .container{max-width:1200px;margin:32px auto;padding:0 16px}
+    .controls{display:flex;gap:12px;align-items:center;margin-bottom:12px}
+    .badge{background:var(--accent);color:white;padding:6px 10px;border-radius:999px;font-weight:600}
+    .grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
+    @media (max-width:1000px){.grid{grid-template-columns:repeat(3,1fr)}}
+    @media (max-width:700px){.grid{grid-template-columns:repeat(2,1fr)}}
+    @media (max-width:420px){.grid{grid-template-columns:1fr}}
+
+    .card{background:white;border-radius:12px;padding:12px;box-shadow:var(--card-shadow);display:flex;flex-direction:column;gap:8px;transition:transform .18s ease, box-shadow .18s ease}
+    .card:hover{transform:translateY(-6px);box-shadow:0 18px 40px rgba(0,0,0,0.12)}
+    .card img{width:100%;height:160px;object-fit:cover;border-radius:10px}
+    .card .title{font-weight:700;font-size:15px}
+    .price-row{display:flex;justify-content:space-between;align-items:center}
+    .price{font-weight:800;color:var(--accent)}
+    .add{padding:8px 10px;border-radius:10px;background:linear-gradient(90deg,var(--accent),#ff7b84);color:white;border:none;cursor:pointer}
+
+    /* Section styles */
+    .section{margin:36px 0}
+    .section .title{display:flex;align-items:center;gap:12px}
+    .section h2{margin:0}
+
+    /* Footer */
+    footer{background:#111827;color:white;padding:28px 16px}
+    .footer-inner{max-width:1200px;margin:0 auto;display:flex;gap:24px;flex-wrap:wrap}
+    .footer-inner .col{flex:1;min-width:180px}
+    .small{font-size:13px;color:rgba(255,255,255,0.8)}
+
+    /* Tiny animations */
+    .pulse{animation:pulse 2.8s infinite}
+    @keyframes pulse{0%{transform:scale(1)}50%{transform:scale(1.02)}100%{transform:scale(1)}}
+
+    /* Loader */
+    .loader{display:flex;gap:6px}
+    .loader span{width:8px;height:8px;border-radius:50%;background:var(--accent-2);display:inline-block;animation:bounce .9s infinite}
+    .loader span:nth-child(2){animation-delay:.12s}
+    .loader span:nth-child(3){animation-delay:.24s}
+    @keyframes bounce{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}
+
+  </style>
+</head>
+<body>
+  <header>
+    <div class="nav">
+      <div class="logo">
+        <div class="mark">S</div>
+        <div>
+          <div style="font-size:16px">Soho Cafe Grill</div>
+          <div style="font-size:12px;color:var(--muted)">Fresh • Animated • Tasty</div>
+        </div>
+      </div>
+      <nav>
+        <ul>
+          <li><a href="#">Home</a></li>
+          <li><a href="#products">Menu</a></li>
+          <li><a href="#about">About</a></li>
+          <li><a href="#contact" class="primary">Contact</a></li>
+        </ul>
+      </nav>
+      <div class="search">
+        <input id="search" placeholder="Search products, e.g. latte" />
+        <div class="cart">Cart • <span id="cart-count">0</span></div>
+      </div>
+    </div>
+  </header>
+
+  <section class="hero">
+    <div class="bg">
+      <div class="overlay">
+        <div class="content">
+          <div class="text">
+            <h1>Welcome to Soho — animated, delicious, and full of surprises</h1>
+            <p>Explore our collection of 100+ products — beverages, snacks, desserts, and exclusive combos. Scroll down and tap "Add" to build your order.</p>
+            <div style="margin-top:12px;display:flex;gap:8px;align-items:center">
+              <button class="add" onclick="scrollToProducts()">Browse Menu</button>
+              <div style="margin-left:8px;display:flex;align-items:center;gap:8px"><div class="badge">100+ Items</div><div class="small">Free pickup &amp; delivery</div></div>
+            </div>
+          </div>
+
+          <div style="flex:1;display:flex;justify-content:center">
+            <div style="width:260px;height:180px;background:linear-gradient(120deg,#fff,rgba(255,255,255,0.6));border-radius:16px;padding:12px;display:flex;flex-direction:column;justify-content:center;box-shadow:var(--card-shadow)">
+              <div style="font-weight:800;font-size:18px;color:var(--accent)">Featured: Soho Signature</div>
+              <div style="font-size:13px;color:var(--muted);margin-top:8px">A creamy, dreamy special drink with handcrafted foam art.</div>
+              <div style="margin-top:12px;display:flex;gap:8px"><button class="add">Order Now</button><button class="pulse" style="padding:8px 10px;border-radius:10px;border:1px solid rgba(0,0,0,0.06);background:transparent">Details</button></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Decorative bottles -->
+    <div class="bottle" style="left:16px;top:40px"><img src="https://images.unsplash.com/photo-1511920170033-f8396924c348?q=80&w=600&auto=format&fit=crop&ixlib=rb-4.0.3&s=placeholder" alt="bottle"></div>
+    <div class="bottle" style="left:80px;top:120px"><img src="https://images.unsplash.com/photo-1604908177522-9a0f3be317b9?q=80&w=420&auto=format&fit=crop&ixlib=rb-4.0.3&s=placeholder" alt="bottle"></div>
+  </section>
+
+  <main class="container">
+    <div class="section" id="products">
+      <div class="title" style="justify-content:space-between">
+        <div style="display:flex;align-items:center;gap:12px">
+          <h2>Our Menu</h2>
+          <div class="small">Handpicked &amp; freshly prepared</div>
+        </div>
+        <div class="controls">
+          <div class="small">Sort by:</div>
+          <select id="sort">
+            <option value="pop">Popular</option>
+            <option value="low">Price: Low</option>
+            <option value="high">Price: High</option>
+          </select>
+          <button onclick="shuffleProducts()" class="small">Shuffle</button>
+        </div>
+      </div>
+
+      <div id="grid" class="grid" aria-live="polite">
+        <!-- Product cards will be injected by JS -->
+      </div>
+    </div>
+
+    <div class="section" id="about">
+      <div class="title"><h2>About Soho Cafe Grill</h2></div>
+      <p class="small">Soho Cafe Grill blends animated aesthetics with a cozy menu. Our site uses lightweight animations, a fast product grid, and responsive layout that looks great on mobile and desktop.</p>
+    </div>
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+      <div class="col">
+        <div style="font-weight:800">Soho Cafe Grill</div>
+        <div class="small">123 Flavor Street, Food City · Open daily 8am–11pm</div>
+      </div>
+      <div class="col">
+        <div style="font-weight:700">Menu</div>
+        <div class="small">Beverages · Snacks · Desserts · Combos</div>
+      </div>
+      <div class="col">
+        <div style="font-weight:700">Contact</div>
+        <div class="small">phone: +92 300 0000000<br>email: hello@sohocafe.example</div>
+      </div>
+      <div class="col">
+        <div style="font-weight:700">Follow</div>
+        <div class="small">Instagram · Facebook · TikTok</div>
+      </div>
+    </div>
+    <div style="max-width:1200px;margin:20px auto 0;color:rgba(255,255,255,0.6);font-size:13px;text-align:center">© Soho Cafe Grill — Crafted with care</div>
+  </footer>
+
+  <script>
+    // Generate 100 product items dynamically
+    const products = [];
+    const categories = ['Beverage','Snack','Dessert','Combo','Coffee','Tea'];
+    for(let i=1;i<=100;i++){
+      const cat = categories[i % categories.length];
+      const price = (Math.round((Math.random()*12 + 1)*100)/100).toFixed(2);
+      products.push({
+        id: i,
+        title: `${cat} #${i}`,
+        desc: `Delicious ${cat.toLowerCase()} — handcrafted and fresh.`,
+        price: price,
+        img: `https://picsum.photos/seed/soho-${i}/600/420`
+      })
+    }
+
+    const grid = document.getElementById('grid');
+    const cartCount = document.getElementById('cart-count');
+    let cart = 0;
+
+    function render(list){
+      grid.innerHTML = '';
+      const frag = document.createDocumentFragment();
+      list.forEach(p=>{
+        const div = document.createElement('div');
+        div.className = 'card';
+        div.innerHTML = `
+          <img loading="lazy" src="${p.img}" alt="${p.title}" />
+          <div class="title">${p.title}</div>
+          <div style="font-size:13px;color:var(--muted)">${p.desc}</div>
+          <div class="price-row">
+            <div class="price">$${p.price}</div>
+            <button class="add" onclick="addToCart(${p.id})">Add</button>
+          </div>
+        `;
+        frag.appendChild(div);
+      });
+      grid.appendChild(frag);
+    }
+
+    function addToCart(id){
+      cart += 1;
+      cartCount.textContent = cart;
+      // tiny feedback
+      const btn = event.target;
+      btn.textContent = 'Added';
+      btn.disabled = true;
+      setTimeout(()=>{btn.textContent='Add';btn.disabled=false},1400)
+    }
+
+    // initial render
+    render(products);
+
+    // search
+    document.getElementById('search').addEventListener('input', (e)=>{
+      const q = e.target.value.toLowerCase().trim();
+      if(!q){ render(products); return }
+      const filtered = products.filter(p=>p.title.toLowerCase().includes(q) || p.desc.toLowerCase().includes(q));
+      render(filtered);
+    })
+
+    // sort
+    document.getElementById('sort').addEventListener('change', (e)=>{
+      const v = e.target.value;
+      if(v==='low') render([...products].sort((a,b)=>a.price-b.price));
+      else if(v==='high') render([...products].sort((a,b)=>b.price-a.price));
+      else render(products);
+    })
+
+    function shuffleProducts(){
+      const copy = [...products];
+      for(let i=copy.length-1;i>0;i--){
+        const j = Math.floor(Math.random()*(i+1));
+        [copy[i],copy[j]]=[copy[j],copy[i]];
+      }
+      render(copy);
+    }
+
+    function scrollToProducts(){
+      document.getElementById('products').scrollIntoView({behavior:'smooth'});
+    }
+  </script>
+</body>
+</html>
